@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 
-from ToDoList.tasks.models import Task
-from ToDoList.tasks.permissions import AdminOrOwnTaskPermission
-from ToDoList.tasks.serializers import TaskListSerializer, TaskDetailSerializer
+from .models import Task
+from .permissions import AdminOrOwnTaskPermission
+from .serializers import TaskListSerializer, TaskDetailSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):

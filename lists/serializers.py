@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from ToDoList.lists.models import List
-from ToDoList.tasks.serializers import TaskListSerializer
+from .models import List
+from tasks.serializers import TaskListSerializer
 
 
 class ListListSerializer(serializers.ModelSerializer):

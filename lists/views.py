@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 
-from ToDoList.lists.models import List
-from ToDoList.lists.permissions import OwnListPermission
-from ToDoList.lists.serializers import ListListSerializer, ListDetailSerializer
+from .models import List
+from .permissions import OwnListPermission
+from .serializers import ListListSerializer, ListDetailSerializer
 
 
 class ListViewSet(viewsets.ModelViewSet):
