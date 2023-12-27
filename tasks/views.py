@@ -15,3 +15,9 @@ class TaskViewSet(viewsets.ModelViewSet):
         if self.action != 'list':
             return TaskDetailSerializer
         return TaskListSerializer
+
+    def get_queryset(self):
+        qs = Task.objects.all()
+        if not self.request.user.is_staff:
+            qs = qs.filter(list__person=self.request.user)
+        return qs

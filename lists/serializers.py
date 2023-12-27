@@ -15,4 +15,4 @@ class ListDetailSerializer(ListListSerializer):
     Tasks = TaskListSerializer(many=True)
 
     class Meta(ListListSerializer.Meta):
-        fields = ('name', 'Tasks')
+        fields = ('id', 'name', 'Tasks')
