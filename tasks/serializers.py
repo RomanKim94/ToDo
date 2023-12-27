@@ -11,6 +11,7 @@ class TaskListSerializer(serializers.ModelSerializer):
 
 
 class TaskDetailSerializer(serializers.ModelSerializer):
+    person = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Task
