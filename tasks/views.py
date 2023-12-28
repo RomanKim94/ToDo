@@ -26,7 +26,11 @@ class TaskViewSet(viewsets.ModelViewSet):
         return qs
 
     def create(self, request, *args, **kwargs):
-        request.data.setdefault('list', List.objects.filter(person=self.request.user, name='General').first().id)
+        current_user = self.request.user
+        general_list = List.objects.filter(person=current_user, name='General').first()
+        if not general_list:
+            List.objects.create(person=current_user, name='General')
+        request.data.setdefault('list', List.objects.filter(person=current_user, name='General').first().id)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
