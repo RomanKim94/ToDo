@@ -128,6 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'persons.Person'
 
+LOGIN_REDIRECT_URL = '/list/'
+
 # REST_FRAMEWORK = {
 #     'DATE_INPUT_FORMATS': [
 #         '%d.%m.%Y',
