@@ -10,6 +10,12 @@ class Task(models.Model):
         ('processing', 'PROCESSING'),
         ('canceled', 'CANCELED'),
     )
+    PRIORITY = (
+        ('1', 'Высший'),
+        ('2', 'Средний'),
+        ('3', 'Низкий'),
+        ('4', 'Без приоритета'),
+    )
 
     name = models.CharField(
         verbose_name='Название задачи',
@@ -19,10 +25,12 @@ class Task(models.Model):
         verbose_name='Описание задачи',
         blank=True,
     )
-    is_done = models.CharField(
+    stage = models.CharField(
         verbose_name='Этап выполнения задачи',
         max_length=10,
         choices=STAGES,
+        blank=True,
+        default='not_done',
     )
     deadline = models.DateTimeField(
         verbose_name='Срок выполнения задачи',
@@ -43,5 +51,11 @@ class Task(models.Model):
         verbose_name='Список задач',
         blank=True,
         on_delete=models.CASCADE,
-        related_name='Tasks'
+        related_name='Tasks',
+    )
+    priority = models.IntegerField(
+        verbose_name='Уровень приоритета',
+        choices=PRIORITY,
+        blank=True,
+        default='1',
     )

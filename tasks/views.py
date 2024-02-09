@@ -8,6 +8,8 @@ from .permissions import AdminOrOwnTaskPermission
 from .serializers import TaskListSerializer, TaskDetailSerializer
 from lists.models import List
 
+from .services import TaskServices
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -15,14 +17,16 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, AdminOrOwnTaskPermission)
 
     def get_serializer_class(self):
-        if self.action != 'list':
-            return TaskDetailSerializer
-        return TaskListSerializer
+        if self.action == 'list':
+            return TaskListSerializer
+        return TaskDetailSerializer
 
     def get_queryset(self):
         qs = Task.objects.all()
-        if not self.request.user.is_staff:
-            qs = qs.filter(list__person=self.request.user)
+        person = self.request.user
+        qs = TaskServices.qs_filter(qs, self.request.query_params, person)
+        qs = TaskServices.qs_sorting(qs, self.request.query_params)
+
         return qs
 
     def create(self, request, *args, **kwargs):
@@ -30,8 +34,10 @@ class TaskViewSet(viewsets.ModelViewSet):
         general_list = List.objects.filter(person=current_user, name='General').first()
         if not general_list:
             List.objects.create(person=current_user, name='General')
-        request.data.setdefault('list', List.objects.filter(person=current_user, name='General').first().id)
-        serializer = self.get_serializer(data=request.data)
+        new_data = dict(request.data.items())
+        print(new_data.items())
+        new_data.setdefault('list', List.objects.filter(person=current_user, name='General').first().id)
+        serializer = self.get_serializer(data=new_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

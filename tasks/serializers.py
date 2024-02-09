@@ -11,7 +11,8 @@ class TaskListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('name', 'is_done', 'deadline', 'list')
+        # fields = ('name', 'stage', 'deadline', 'list')
+        fields = '__all__'
 
 
 class TaskDetailSerializer(TaskListSerializer):
